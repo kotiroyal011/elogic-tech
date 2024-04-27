@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 const colors = {
   main: "#0080FF",
   hover: "#147EE8",
+  secondary: "#DBE6FF",
 };
 
 export const theme = createTheme({
@@ -10,6 +11,9 @@ export const theme = createTheme({
     primary: {
       main: colors.main,
       dark: colors.hover,
+    },
+    secondary: {
+      main: colors.secondary,
     },
   },
 });

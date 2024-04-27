@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import img from "../assets/img.png";
 import {
   Box,
@@ -11,7 +11,29 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const handleLogin = () => {
+    const data = JSON.parse(localStorage.getItem("data"));
+    const user = data.users.find(
+      (user) =>
+        (user.username === username && user.Password === password) ||
+        (user.email === username && user.Password === password)
+    );
+
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate("/dashboard");
+      console.log("Login successful:", user);
+    } else {
+      navigate("/");
+      setError("Invalid username or password");
+    }
+  };
   return (
     <Box>
       <Stack direction="row" height="100vh">
@@ -29,6 +51,7 @@ const Login = () => {
               placeholder="Enter user ID or E-mail"
               sx={{ backgroundColor: "#DBE6FF" }}
               size="small"
+              onChange={(e) => setUsername(e.target.value)}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -42,6 +65,8 @@ const Login = () => {
               placeholder="Enter Password"
               sx={{ backgroundColor: "#DBE6FF" }}
               size="small"
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
               fullWidth
               InputProps={{
                 startAdornment: (
@@ -59,6 +84,7 @@ const Login = () => {
             <Button
               variant="contained"
               size="small"
+              onClick={handleLogin}
               sx={{
                 p: "10px",
                 "&:active": {
